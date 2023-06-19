@@ -1,13 +1,33 @@
 import { DialogBox, DialogBoxConfig } from "../textClass/DialogBox";
+import { TimelinePlayer } from "../timeline/TimelinePlayer";
+import { Timeline } from "../battle/Timeline";
+import { timelineData } from "../battleData/timeline";
 
 export let street: Phaser.GameObjects.Image;
 
 export class MainScene extends Phaser.Scene {
+  private timeline?: Timeline;
+  
   bgm: Phaser.Sound.BaseSound | null = null;
   //bgm!: Phaser.Sound.BaseSound | null = null;
 
   constructor() {
     super("main");
+  }
+
+  init(data: any) {
+    // this.scene.restart()の第1引数もしくは
+    // this.scene.start()の第2引数に指定されたオブジェクトがdataに渡される
+    const timelineID = data.timelineID || 'start';
+
+    if (!(timelineID in timelineData)) {
+      console.error(`[ERROR] タイムラインID[${timelineID}]は登録されていません`);
+      // 登録されていないタイムラインIDが指定されていたらタイトルシーンに遷移する
+      this.scene.start('title');
+      return;
+    }
+
+    this.timeline = timelineData[timelineID];
   }
 
   preload() {
@@ -19,6 +39,11 @@ export class MainScene extends Phaser.Scene {
   }
 
   create() {
+
+    if (!this.timeline) {
+      return;
+    }
+
     this.bgm = this.sound.add("bossBattleBGM", { loop: true, volume: 0.1 });
     this.bgm.play();
 
@@ -30,7 +55,7 @@ export class MainScene extends Phaser.Scene {
     const textStyle: Phaser.Types.GameObjects.Text.TextStyle = {
       fontFamily:
         '"Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif',
-      fontSize: "48px",
+      fontSize: "36px",
     };
     const dialogBoxHeight = 200;
     const dialogBoxMargin = 10;
@@ -44,8 +69,11 @@ export class MainScene extends Phaser.Scene {
       textStyle: textStyle,
     };
     const dialogBox = new DialogBox(this, dialogBoxConfig);
-    dialogBox.setText("ドラゴンが現れた ▼");
-    this.add.existing(dialogBox);
+    // タイムラインプレイヤーの作成
+    const timelinePlayer = new TimelinePlayer(this, dialogBox, textStyle);
+
+    // タイムラインの再生開始
+    timelinePlayer.start(this.timeline);
 
     this.add.image(width / 2, height / 2 - 200, "dragon").setScale(5.0);
     this.add
