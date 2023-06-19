@@ -1,30 +1,36 @@
-export let street: Phaser.GameObjects.Image;
+export class LoadingScene extends Phaser.Scene {
+  constructor() {
+    // シーンのkeyを指定
+    super("loading");
+  }
 
-export class LoadingScene extends Phaser.Scene{
+  preload() {
+    this.load.image("street", "../assets/img/background/street.png");
+    this.load.image("dragon", "../assets/img/enemy/dragon.png");
+    this.load.image("smallDragonA", "../assets/img/enemy/smallDragonA.png");
+    this.load.image("smallDragonB", "../assets/img/enemy/smallDragonB.png");
+    this.load.audio("bossBattleBGM", "../assets/bgm/bossBGM_vsDragon.mp3");
+  }
 
-    bgm: Phaser.Sound.BaseSound | null = null;
-    //bgm!: Phaser.Sound.BaseSound | null = null;
+  create() {
+    const { width, height } = this.game.canvas;
 
-    constructor() {
-        super("loading");
-    }
+    this.add
+      .text(width / 2, height / 2, "Loading...")
+      .setOrigin(0.5)
+      .setScale(2.0);
 
-    preload(){
-        this.load.image('street','../assets/street.png')
-        this.load.image('boss','../assets/boss.png')
-        this.load.audio('bossBattleBGM','../assets/Dragon1.mp3')
-    }
+    const zone = this.add.zone(width / 2, height / 2, width, height);
+    zone.setInteractive({
+      useHandCursor: true,
+    });
+    zone.on("pointerdown", () => {
+      this.scene.start("title", { timelineID: "start" });
+    });
 
-    create(){
-        this.bgm = this.sound.add("bossBattleBGM",{loop: true,volume: 0.3});
-        this.bgm.play();
-
-        const {width,height} = this.game.canvas;
-
-        street = this.add.image(width/2,height/2,"street")
-        street.setScale(2.0)
-        this.add.image(width/2,height/2-200,"boss").setScale(5.0)
-        //this.add.image(width/2,height/2,"street").setScale(2.0)
-    }
-
+    //TODO: この処理に修正
+    // this.load.on('complete', () => {
+    //     this.scene.start('title');
+    //   });
+  }
 }
