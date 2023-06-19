@@ -2,6 +2,7 @@ import { DialogBox, DialogBoxConfig } from "../textClass/DialogBox";
 import { TimelinePlayer } from "../timeline/TimelinePlayer";
 import { Timeline } from "../battle/Timeline";
 import { timelineData } from "../battleData/timeline";
+import { PlayerStatus, PlayerStatusConfig } from "../textClass/PlayerStatus";
 
 export let street: Phaser.GameObjects.Image;
 
@@ -39,6 +40,77 @@ export class MainScene extends Phaser.Scene {
   }
 
   create() {
+
+    const playerStatusTextStyle: Phaser.Types.GameObjects.Text.TextStyle = {
+      fontFamily: 'Arial, sans-serif',
+      fontSize: '18px',
+      color: '#ffffff',
+      //fontWeight: 'bold',
+      stroke: '#000000',
+      strokeThickness: 2,
+      shadow: {
+        offsetX: 3,
+        offsetY: 3,
+        color: '#000000',
+        blur: 5,
+        stroke: true,
+        fill: true
+      }
+    };
+    
+
+    const playerStatusConfig: PlayerStatusConfig = {
+      playerName: "yuyuyu", //名前
+      hp: 30,         //ヘルスポイント:体力
+      maxHp: 30,
+      mp: 30,         //マジックポイント:魔力
+      maxMp: 30,
+      sp: 30,         //スキルポイント
+      maxSp: 30,
+      str: 30,         //ストレングス:力
+      maxStr: 30,
+      atk: 30,         //アタック:攻撃力
+      maxAtk: 30,
+      def: 30,         //ディフェンス:防御力
+      maxDef: 30,
+      spd: 30,         //スピード:素早さ
+      maxSpd: 30,
+      vit: 30,         //バイタリティ:生命力
+      maxVit: 30,
+      int: 30,         //インテリジェンス:知力
+      maxInt: 30,
+      dex: 30,         //デクステリティ:器用さ 命中率
+      maxDex: 30,
+      avd: 30,         //アヴォイダンス:回避
+      maxAvd: 30,
+      luk: 30,         //ラック:運
+      maxLuk: 30,
+      level: 1,       //レベル
+      exp: 30,         //経験値
+      nextExp: 30,
+      buff: "test",        //正の状態異常
+      debuff: "test",      //負の状態異常
+      weapon: "test",      //装備武器
+      armor: "test",       //装備防具
+      accessory: "test",   //装備アクセサリー
+      uniquSkill1: "test",
+      uniquSkill2: "test",
+      uniquSkill3: "test",
+      passiveSkill1: "test",
+      passiveSkill2: "test",
+      passiveSkill3: "test",
+    
+      faith: 30,
+      charm: 30,
+      introversion: 30,
+      extroversion: 30,
+      
+      textStyle: playerStatusTextStyle,
+    };
+
+    const playerStatus = new PlayerStatus(this,10,10,playerStatusConfig);
+    console.log(playerStatus);
+    this.add.existing(playerStatus).setScale(2.0).setDepth(1);
 
     if (!this.timeline) {
       return;
