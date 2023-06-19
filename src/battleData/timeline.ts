@@ -3,7 +3,6 @@ import { Timelines } from "../battle/Timelines"
 export const timelineData: Timelines = {
   start: [
     {type: 'dialog', text: 'よくぞここまで来たな、人間ども。しかし、ここでお前たちは終わりだ。 ▼', actorName: 'ホワイトドラゴン'},
-    {type: 'timelineTransition', timelineID: 'choice01'}
   ],
   choice01: [
     {type: 'setBackground', x: 400, y: 300, key: 'street'},
