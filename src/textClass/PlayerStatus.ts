@@ -29,6 +29,7 @@ export class PlayerStatus extends Phaser.GameObjects.Container {
     super(scene, x, y);
 
     // 背景ボックスの作成
+    
     const backgroundBox = scene.add.graphics();
     backgroundBox.fillStyle(0x4b0082, 0.8);
     backgroundBox.fillRect(5, 5, 80, 170);

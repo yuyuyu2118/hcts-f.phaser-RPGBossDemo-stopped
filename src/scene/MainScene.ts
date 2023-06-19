@@ -1,34 +1,14 @@
-import { DialogBox, DialogBoxConfig } from "../textClass/DialogBox";
-import { TimelinePlayer } from "../timeline/TimelinePlayer";
-import { Timeline } from "../battle/Timeline";
-import { timelineData } from "../battleData/timeline";
 import { PlayerStatus, PlayerStatusConfig } from "../textClass/PlayerStatus";
 
 export let street: Phaser.GameObjects.Image;
 
 export class MainScene extends Phaser.Scene {
-  private timeline?: Timeline;
   
   bgm: Phaser.Sound.BaseSound | null = null;
   //bgm!: Phaser.Sound.BaseSound | null = null;
 
   constructor() {
     super("main");
-  }
-
-  init(data: any) {
-    // this.scene.restart()の第1引数もしくは
-    // this.scene.start()の第2引数に指定されたオブジェクトがdataに渡される
-    const timelineID = data.timelineID || 'start';
-
-    if (!(timelineID in timelineData)) {
-      console.error(`[ERROR] タイムラインID[${timelineID}]は登録されていません`);
-      // 登録されていないタイムラインIDが指定されていたらタイトルシーンに遷移する
-      this.scene.start('title');
-      return;
-    }
-
-    this.timeline = timelineData[timelineID];
   }
 
   preload() {
@@ -77,10 +57,6 @@ export class MainScene extends Phaser.Scene {
     console.log(playerStatus);
     this.add.existing(playerStatus).setScale(2.0).setDepth(1);
 
-    if (!this.timeline) {
-      return;
-    }
-
     this.bgm = this.sound.add("bossBattleBGM", { loop: true, volume: 0.1 });
     this.bgm.play();
 
@@ -94,23 +70,6 @@ export class MainScene extends Phaser.Scene {
         '"Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif',
       fontSize: "36px",
     };
-    const dialogBoxHeight = 200;
-    const dialogBoxMargin = 10;
-    const dialogBoxConfig: DialogBoxConfig = {
-      x: width / 2,
-      y: height - dialogBoxMargin - dialogBoxHeight / 2,
-      width: width - dialogBoxMargin * 2,
-      height: dialogBoxHeight,
-      padding: 10,
-      margin: dialogBoxMargin,
-      textStyle: textStyle,
-    };
-    const dialogBox = new DialogBox(this, dialogBoxConfig);
-    // タイムラインプレイヤーの作成
-    const timelinePlayer = new TimelinePlayer(this, dialogBox, textStyle);
-
-    // タイムラインの再生開始
-    timelinePlayer.start(this.timeline);
 
     this.add.image(width / 2, height / 2 - 200, "dragon").setScale(5.0);
     this.add

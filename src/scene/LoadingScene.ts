@@ -14,6 +14,8 @@ export class LoadingScene extends Phaser.Scene {
 
   create() {
     const { width, height } = this.game.canvas;
+    this.registry.set('canvasWidth',width)
+    this.registry.set('canvasHeight',height)
 
     this.add
       .text(width / 2, height / 2, "Loading...")
