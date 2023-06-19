@@ -25,7 +25,7 @@ export class LoadingScene extends Phaser.Scene {
       useHandCursor: true,
     });
     zone.on("pointerdown", () => {
-      this.scene.start("title", { timelineID: "start" });
+      this.scene.start("title");
     });
 
     //TODO: この処理に修正
